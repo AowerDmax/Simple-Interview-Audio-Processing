@@ -8,6 +8,10 @@
 
 ---
 
+下图讲解,interview(系统内声音) 询问 `哈希` 相关问题
+ChatGPT(大模型助手) 首先回答了简要答案,哈希表、哈希函数、哈希冲突
+然后针对这三个点,进行详细性针对性回答.
+流式输出,保证输出速度
 ![Audio Configuration](img/image.png)
 
 ## Features
@@ -15,8 +19,9 @@
 - **音频源处理**: 读取系统声音作为 `interviewer` 声音源，读取麦克风声音作为 `Rookie` 声音源，准确区分输入和输出。
 - **流式输出**: 支持 `interviewer`、`Rookie` 和 `ChatGPT` 的流式对话输出。
 - **自定义设置**: 可以自定义对话深度和打印内容，控制 `interviewer`、`Rookie` 和 `ChatGPT` 的最大对话记录数。
-- **Prompt 工作流**: 根据预设工作流顺序处理 `prompt` 文件夹中的所有文件。
+- **Prompt 工作流**: 根据预设工作流顺序处理 `prompt` 文件夹中的所有文件。目前的工作流支持快速回复总结,然后针对各项针对性细节性回答
 - **保存对话记录**: 通过运行 `python interview/SaveFile.py` 将对话记录保存为 Markdown 文件。
+- **支持 openai 式 api**: `ChatGPT`, `Oaipro`, `Deepseek`, `通义千问`, 以及通过 `newApi` 和 `OneApi` 转换的 `openai` 格式的 API
 
 ## Installation
 
