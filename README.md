@@ -93,7 +93,7 @@ poetry shell
 复制模板文件并根据需要进行修改：
 
 ```bash
-cp .env.template .env
+cp env.template .env
 ```
 
 重点修改 `AGGREGATE_DEVICE_INDEX`、`MIC_DEVICE_INDEX` 以及 GPT 的 `baseurl` 和 `API` 配置。
