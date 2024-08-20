@@ -17,6 +17,8 @@
 支持 `本地部署` 和 `服务器部署`. `flex` 布局,在 `手机` `平板` `电脑` 下的具有良好的显示效果
 ![Web](img/web.gif)
 
+[web部分的仓库](https://github.com/AowerDmax/websocket-redis)
+
 ---
 
 ### RAG 展示
@@ -26,6 +28,8 @@
 ![Rag_1](img/RAG_1.png)
 
 ![Rag_2](img/RAG_2.png)
+
+[RAG部分的仓库](https://github.com/AowerDmax/websocket-redis)
 
 #### 如何使用 RAG 知识库
 
