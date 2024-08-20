@@ -4,6 +4,7 @@ import asyncio
 import websockets
 from Config import Config
 import os
+import time
 from queue import Queue
 from multiprocessing import Process
 from DialogManager import DialogManager
@@ -22,25 +23,26 @@ class Interview:
 
 
     async def ws_client(self, id="Interview", chunk_begin=0, chunk_size=1):
-        for i in range(chunk_begin, chunk_begin + chunk_size):
-            self.offline_msg_done = False
-            self.voices = Queue()
-            
-            uri = f"ws://{Config.INTERVIEWER_HOST}:{Config.INTERVIEWER_PORT}"
-            ssl_context = None
-            
-            print("connect to", uri)
-            try:
-                async with websockets.connect(uri, subprotocols=["binary"], ping_interval=None, ssl=ssl_context) as self.websocket:
-                    task1 = asyncio.create_task(self.record_system_voice())
-                    task2 = asyncio.create_task(self.message(id))
-                    await asyncio.gather(task1, task2)
-            except websockets.exceptions.ConnectionClosedError as e:
-                print(f"WebSocket connection closed with error: {e}")
-                break
-            except Exception as e:
-                print(f"Interviewer error occurred: {e}")
-                break
+        while True:
+            for i in range(chunk_begin, chunk_begin + chunk_size):
+                self.offline_msg_done = False
+                self.voices = Queue()
+                
+                uri = f"ws://{Config.INTERVIEWER_HOST}:{Config.INTERVIEWER_PORT}"
+                ssl_context = None
+                
+                print("Connecting to", uri)
+                try:
+                    async with websockets.connect(uri, subprotocols=["binary"], ping_interval=None, ssl=ssl_context) as self.websocket:
+                        task1 = asyncio.create_task(self.record_system_voice())
+                        task2 = asyncio.create_task(self.message(id))
+                        await asyncio.gather(task1, task2)
+                except websockets.exceptions.ConnectionClosedError as e:
+                    print(f"WebSocket connection closed with error: {e}")
+                    await asyncio.sleep(3)
+                except Exception as e:
+                    print(f"Interviewer error occurred: {e}")
+                    await asyncio.sleep(3)
 
     async def record_system_voice(self):
         FORMAT = pyaudio.paInt16
@@ -50,13 +52,20 @@ class Interview:
         CHUNK = int(RATE / 1000 * chunk_size)
         audio = pyaudio.PyAudio()
 
-        print(f"Config.AGGREGATE_DEVICE_INDEX: {Config.AGGREGATE_DEVICE_INDEX}")
-        system_stream = audio.open(format=FORMAT,
-                                   channels=CHANNELS,
-                                   rate=RATE,
-                                   input=True,
-                                   input_device_index=Config.AGGREGATE_DEVICE_INDEX,
-                                   frames_per_buffer=CHUNK)
+
+        while True:
+            try:
+                audio = pyaudio.PyAudio()
+                system_stream = audio.open(format=FORMAT,
+                                           channels=CHANNELS,
+                                           rate=RATE,
+                                           input=True,
+                                           input_device_index=Config.AGGREGATE_DEVICE_INDEX,
+                                           frames_per_buffer=CHUNK)
+                break
+            except OSError as e:
+                print(f"Error opening audio stream: {e}")
+                await asyncio.sleep(3)
 
         fst_dict, hotword_msg = self.prepare_hotword_message()
 
@@ -148,8 +157,13 @@ class Interview:
 
 
 def interview_thread(id, chunk_begin, chunk_size):
-    interview = Interview()
-    asyncio.run(interview.ws_client(id, chunk_begin, chunk_size))
+    while True:
+        try:
+            interview = Interview()
+            asyncio.run(interview.ws_client(id, chunk_begin, chunk_size))
+        except Exception as e:
+            print(f"Interview thread encountered an error: {e}")
+            time.sleep(3)
 
 if __name__ == '__main__':
     p = Process(target=interview_thread, args=("interviewer", 0, 1))

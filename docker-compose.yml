@@ -2,10 +2,10 @@ version: "3.8"
 
 services:
   app:
-    image: ghcr.io/aowerdmax/websocket-redis/websocket_redis:latest
+    build: .
     container_name: websocket_redis
     ports:
-      - "${GO_APP_PORT}:${GO_APP_PORT}"
+      - "${GO_APP_PORT}:8080"
     volumes:
       - ./data:/app/data
     depends_on:
@@ -15,13 +15,15 @@ services:
       - .env
     environment:
       MEILISEARCH_HOST: "meilisearch"
+      MEILISEARCH_PORT: 7700
       REDIS_HOST: "redis"
+      REDIS_HOST: 6379
 
   meilisearch:
     image: getmeili/meilisearch:latest
     container_name: meilisearch
     ports:
-      - "${MEILISEARCH_PORT}:${MEILISEARCH_PORT}"
+      - "${MEILISEARCH_PORT}:7700"
     environment:
       MEILI_ENV: "development"
     volumes:
@@ -53,7 +55,7 @@ services:
     image: redis:latest
     container_name: redis_server
     ports:
-      - "${REDIS_PORT}:${REDIS_PORT}"
+      - "${REDIS_PORT}:6379"
     volumes:
       - redis_data:/data
     networks:
