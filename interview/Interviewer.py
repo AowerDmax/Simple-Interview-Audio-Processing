@@ -8,6 +8,7 @@ from queue import Queue
 from multiprocessing import Process
 from DialogManager import DialogManager
 from ChatgptManager import ChatgptManager
+import multiprocessing
 
 class Interview:
     def __init__(self):
@@ -38,7 +39,7 @@ class Interview:
                 print(f"WebSocket connection closed with error: {e}")
                 break
             except Exception as e:
-                print(f"An error occurred: {e}")
+                print(f"Interviewer error occurred: {e}")
                 break
 
     async def record_system_voice(self):
@@ -49,7 +50,7 @@ class Interview:
         CHUNK = int(RATE / 1000 * chunk_size)
         audio = pyaudio.PyAudio()
 
-
+        print(f"Config.AGGREGATE_DEVICE_INDEX: {Config.AGGREGATE_DEVICE_INDEX}")
         system_stream = audio.open(format=FORMAT,
                                    channels=CHANNELS,
                                    rate=RATE,
@@ -123,9 +124,8 @@ class Interview:
                     if self.text_print_2pass_offline:
                         self.text_print_2pass_offline = ""
                         self.dialog.add_to_interviewer("")
-                        await self.chatgpt.run_workflow()
         except Exception as e:
-            print("Exception:", e)
+            print("Interview receive ws message Exception:", e)
 
 
     def prepare_hotword_message(self):

@@ -2,6 +2,7 @@ import os
 import time
 import random
 import redis
+import json
 from multiprocessing import Process
 from Config import Config
 from redis.exceptions import LockNotOwnedError
@@ -21,11 +22,15 @@ class DialogManager:
         self.interviewer_key = "dialog_manager:interviewer"
         self.rookie_key = "dialog_manager:rookie"
         self.chatgpt_key = "dialog_manager:chatgpt"
+        self.next_id = "dialog_manager:next_id"
 
         self.interviewer_icons = ["🎤"]
         self.rookie_icons = ["😅"]
         self.chatgpt_icons = ["🤖"]
 
+    def _get_next_id(self):
+        return self.redis.incr("dialog_manager:next_id")
+    
     def _get_icon(self, list_name):
         if list_name == "interviewer":
             return random.choice(self.interviewer_icons)
@@ -64,13 +69,14 @@ class DialogManager:
         return result
 
     def _get_list(self, key):
-        return [eval(item) for item in self.redis.lrange(key, 0, -1)]
+        return [json.loads(item) for item in self.redis.lrange(key, 0, -1)]
 
     def _add_to_list(self, key, element):
         lock = self.redis.lock("dialog_manager_lock", timeout=10, blocking_timeout=5)
         try:
             lock.acquire()
-            self.redis.rpush(key, str(element))
+            element['id'] = self._get_next_id()
+            self.redis.rpush(key, json.dumps(element))
             self._notify_change()
         finally:
             try:
@@ -84,10 +90,11 @@ class DialogManager:
             lock.acquire()
             current_list = self._get_list(key)
             if current_list:
-                current_list[-1] = element
-                self.redis.lset(key, -1, str(element))
+                element['id'] = current_list[-1]['id']
+                self.redis.lset(key, -1, json.dumps(element))
             else:
-                self.redis.rpush(key, str(element))
+                element['id'] = self._get_next_id()
+                self.redis.rpush(key, json.dumps(element))
             self._notify_change()
         finally:
             try:
@@ -95,8 +102,25 @@ class DialogManager:
             except LockNotOwnedError:
                 pass
 
+    def get_last_interviewer(self):
+        interviewer_list = self._get_valid_entries(self.interviewer_key, 1)
+        return interviewer_list[-1]
+    
     def get_dialog(self):
-        return self._notify_change(False)
+        interviewer_list = self._get_valid_entries(self.interviewer_key, Config.INTERVIEWER_DIALOG_LEN)
+        rookie_list = self._get_valid_entries(self.rookie_key, Config.ROOKIE_DIALOG_LEN)
+
+        combined_list = interviewer_list + rookie_list
+
+        sorted_combined_list = sorted(combined_list, key=lambda x: x['time'])
+
+        output = []
+        for entry in sorted_combined_list:
+            icon = self._get_icon(entry['list_name'])
+            output.append(f"{entry['time']} {icon} {entry['list_name']} : {entry['text']}")
+
+        result = "\n".join(output)
+        return result
     
     def add_to_interviewer(self, element):
         current_time = time.strftime("[%H:%M:%S]", time.localtime())
@@ -135,6 +159,7 @@ class DialogManager:
             self.redis.delete(self.interviewer_key)
             self.redis.delete(self.rookie_key)
             self.redis.delete(self.chatgpt_key)
+            self.redis.delete(self.next_id)
             print("All keys have been cleared.")
         finally:
             try:

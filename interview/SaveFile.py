@@ -1,5 +1,6 @@
 import redis
 import os
+import json
 from Config import Config
 
 class SaveFile:
@@ -11,8 +12,7 @@ class SaveFile:
         self.chatgpt_key = "dialog_manager:chatgpt"
 
     def _get_valid_entries(self, key, max_len):
-        # 使用 eval() 解析 Redis 中的数据
-        entries = [eval(item) for item in self.redis.lrange(key, 0, -1)]
+        entries = [json.loads(item) for item in self.redis.lrange(key, 0, -1)]
         valid_entries = [item for item in entries if item['text'].strip() != ""]
 
         if len(valid_entries) > max_len:

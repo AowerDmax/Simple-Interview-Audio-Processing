@@ -41,6 +41,8 @@ class RequestSender:
                                 if sse_message == '[DONE]':
                                     receiveData += buffer
                                     self.dialog.update_last_chatgpt(receiveData)
+                                    time.sleep(1)
+                                    self.dialog.add_to_chatgpt("")
                                     break
                                 message_data = self.extract_id_and_content(json.loads(sse_message))
                                 if 'content' in message_data and message_data['content']:

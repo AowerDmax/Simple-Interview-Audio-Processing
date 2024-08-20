@@ -11,13 +11,13 @@ for i in range(audio.get_device_count()):
     print(f"Device {i}: {device_info['name']}")
 
 # 选择 Aggregate Device 和麦克风的设备索引
-aggregate_device_index = 12  # 根据上面的列表选择适合的设备索引
+aggregate_device_index = 13  # 根据上面的列表选择适合的设备索引
 mic_device_index = 2  # 替换为你的麦克风设备索引
 
 # 配置参数
 FORMAT = pyaudio.paInt16
 RATE = Config.AUDIO_FS
-CHANNELS = 1  # 单声道可能更兼容不同的设备
+CHANNELS = 1  # 单声道可能会兼容不同的设备
 chunk_size = 60 * Config.CHUNK_SIZE[1] / Config.CHUNK_INTERVAL
 CHUNK = int(RATE / 1000 * chunk_size)
 
@@ -43,7 +43,7 @@ print("Recording...")
 system_frames = []
 mic_frames = []
 
-for _ in range(100):
+for _ in range(500):
     system_data = system_stream.read(CHUNK)
     mic_data = mic_stream.read(CHUNK)
     system_frames.append(system_data)

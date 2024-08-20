@@ -9,8 +9,6 @@ else:
     print("No .env file found")
 
 class Config:
-    HOST = os.getenv("HOST", "localhost")
-    PORT = int(os.getenv("PORT", 10095))
     ROOKIE_HOST = os.getenv("ROOKIE_HOST", "localhost")
     ROOKIE_PORT = int(os.getenv("ROOKIE_PORT", 10095))
     INTERVIEWER_HOST = os.getenv("INTERVIEWER_HOST", "localhost")
@@ -34,5 +32,9 @@ class Config:
     INTERVIEWER_DIALOG_LEN=int(os.getenv("INTERVIEWER_DIALOG_LEN", 3))
     REDIS_HOST=os.getenv("REDIS_HOST", "127.0.0.1")
     REDIS_PORT=int(os.getenv("REDIS_PORT", 6379))
-    AGGREGATE_DEVICE_INDEX=int(os.getenv("AGGREGATE_DEVICE_INDEX", 12))
+    AGGREGATE_DEVICE_INDEX=int(os.getenv("AGGREGATE_DEVICE_INDEX", 13))
     MIC_DEVICE_INDEX=int(os.getenv("MIC_DEVICE_INDEX", 2))
+    MEILISEARCH_HOST=os.getenv("MEILISEARCH_HOST", "127.0.0.1")
+    MEILISEARCH_PORT=int(os.getenv("MEILISEARCH_PORT", 7700))
+    MEILISEARCH_DEEP=int(os.getenv("MEILISEARCH_DEEP", 1))
+    RAG_ENABLED = os.getenv("RAG_ENABLED", "False").lower() in ("true", "1", "yes")

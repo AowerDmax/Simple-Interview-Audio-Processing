@@ -35,7 +35,7 @@ class Rookie:
                 print(f"WebSocket connection closed with error: {e}")
                 break
             except Exception as e:
-                print(f"An error occurred: {e}")
+                print(f"Rookie error occurred: {e}")
                 break
 
     async def record_microphone(self):

@@ -6,6 +6,43 @@
 
 ---
 
+### web 展示
+
+下图讲解, 通过播放本地音频,模仿系统内声音输出 `你为什么要使用消息队列呢?`
+
+`web` 监听到 `你为什么要使用消息队列呢?` 内容并流式输出
+
+`ChatGPT(大模型助手)` 流式输出相关问题的答案.
+
+支持 `本地部署` 和 `服务器部署`. `flex` 布局,在 `手机` `平板` `电脑` 下的具有良好的显示效果
+![Web](img/web.gif)
+
+---
+
+### RAG 展示
+
+下图讲解, 支持将你预设好的问答内容存入`RAG`数据库,在询问`ChatGPT(大模型助手)`之前会先搜索`RAG`数据库.
+
+![Rag_1](img/RAG_1.png)
+
+![Rag_2](img/RAG_2.png)
+
+#### 如何使用 RAG 知识库
+
+1. 在 `.env` 文件内, 设置`RAG_ENABLED=True`
+2. 在 `data` 文件夹下,放入你的知识库 `xlsx` 文件, 会递归遍历所有的`xlsx` 文件
+3. 文件格式如下: 有两列, 第一列是`Q`,第二列是`A`. 分别对应问题和回答. (生成知识库文件可以使用`FastGPT`导出的内容)
+4. 重启`docker`容器, `docker-compose restart`
+
+![Excel](img/excel.png)
+
+**Q:** 能否将我的项目进行存放在 `RAG` 知识库中呢?
+**A:** 目前需要自己处理, 自己询问 GPT 或者自己编写对应的问题, 或者你可以修改网络上 `AI审查代码的项目` 修改里面的`prompt`, 让其生成你自己项目的 `RAG` 知识库.
+
+---
+
+### Terminal 展示
+
 下图讲解, 通过播放 b 站视频, 模仿系统内声音输出 `Interview` 监听到 `Redis` 相关内容
 
 `Rookie` 用户麦克风回答 `我不知道`
@@ -15,6 +52,8 @@
 ![Demo](img/img.gif)
 
 ---
+
+### Workflow 展示
 
 下图讲解,`interview(系统内声音)` 询问 `哈希` 相关问题
 
@@ -36,10 +75,78 @@
 - **Prompt 工作流**: 根据预设工作流顺序处理 `prompt` 文件夹中的所有文件。目前的工作流支持快速回复总结,然后针对各项针对性细节性回答
 - **保存对话记录**: 通过运行 `python interview/SaveFile.py` 将对话记录保存为 Markdown 文件。
 - **支持 openai 式 api**: `ChatGPT`, `Oaipro`, `Deepseek`, `通义千问`, 以及通过 `newApi` 和 `OneApi` 转换的 `openai` 格式的 API
+- **支持 web 展示**: 支持 web 展示 `Interview Dialog`, 流式输出, 支持 `本地部署` 和 `服务器部署`. `flex` 布局,在 `手机` `平板` `电脑` 下的具有良好的显示效果
+- **支持 外接 RAG 知识库**: 支持外接知识库 `RAG`, 存入你预设好的问题以及相应的答案. 在询问 `ChatGPT` 之前会先从先搜索知识库 `RAG` 内的相关内容作为辅助数据. 支持设置 `辅助数据的个数`
+- **优雅的退出机制**: 当 `代码` 退出时, 会自动生成 `dialogs_output_YYMMDDHHMM.md` 文件.
 
 ## Installation
 
-### 1. 启动服务
+### Recommended installation
+
+#### 1. 拉取代码仓库
+
+```bash
+git clone https://github.com/AowerDmax/Simple-Interview-Audio-Processing.git
+
+cd Simple-Interview-Audio-Processing
+```
+
+#### 2. 启动服务
+
+使用 `docker-compose` 启动服务：
+
+```bash
+docker-compose up -d
+```
+
+#### 3. docker 容器设置
+
+```bash
+sudo chmod +x start_funasr_services.sh
+./start_funasr_services.sh
+```
+
+#### 4. 安装环境依赖
+
+如果你对 `Poetry` 不了解, 这里是一个简单的 `Poetry` 入门教程. [Poetry 入门教程](poetry.md)
+
+使用 Poetry 安装依赖：
+
+```bash
+poetry install
+```
+
+进入虚拟环境：
+
+```bash
+poetry shell
+```
+
+#### 5. 配置 `.env` 文件
+
+复制模板文件并根据需要进行修改：
+
+```bash
+cp env.template .env
+```
+
+重点修改 `AGGREGATE_DEVICE_INDEX`、`MIC_DEVICE_INDEX` `RAG_ENABLED` 以及 GPT 的 `baseurl` 和 `API` 配置。
+
+可以通过 `MEILISEARCH_DEEP` 来设置 `RAG` 搜索辅助知识的数量
+
+可以通过 `ROOKIE_DIALOG_LEN`, `CHATGPT_DIALOG_LEN`, `INTERVIEWER_DIALOG_LEN` 来分别设置 `终端` 中 各类消息显示的数量. 同时在传入 `GPT` 问答时的对话记录的时候也遵循这个设置.
+
+#### 6. 运行项目
+
+运行主程序：
+
+```bash
+python interview/main.py
+```
+
+### Manual installation
+
+#### 1. 启动服务
 
 使用 `docker-compose` 启动服务：
 
@@ -93,7 +200,7 @@ nohup bash run_server_2pass.sh \
  --hotword ../../hotwords.txt > log.txt 2>&1 &
 ```
 
-### 2. 安装环境依赖
+#### 2. 安装环境依赖
 
 使用 Poetry 安装依赖：
 
@@ -107,7 +214,7 @@ poetry install
 poetry shell
 ```
 
-### 3. 配置 `.env` 文件
+#### 3. 配置 `.env` 文件
 
 复制模板文件并根据需要进行修改：
 
@@ -117,7 +224,7 @@ cp env.template .env
 
 重点修改 `AGGREGATE_DEVICE_INDEX`、`MIC_DEVICE_INDEX` 以及 GPT 的 `baseurl` 和 `API` 配置。
 
-### 4. 运行项目
+#### 4. 运行项目
 
 运行主程序：
 
@@ -134,12 +241,12 @@ python interview/main.py
 1. **配置 Aggregate Device（合并设备）**：
 
    - 打开 **Audio MIDI Setup** 应用程序。
-   - 创建一个 Aggregate Device，选择 **BlackHole 2ch** 和你的蓝牙耳机设备。
-   - 确保 **BlackHole 2ch** 作为输出设备，蓝牙耳机作为输入设备。
+   - 创建一个 Aggregate Device，选择 **BlackHole 16ch** 和你的蓝牙耳机设备。
+   - 确保 **BlackHole 16ch** 作为输出设备，蓝牙耳机作为输入设备。
 
 2. **配置 Multi-Output Device（多输出设备）**：
 
-   - 创建一个 Multi-Output Device，选择 **BlackHole 2ch** 和蓝牙耳机作为输出设备。
+   - 创建一个 Multi-Output Device，选择 **BlackHole 16ch** 和蓝牙耳机作为输出设备。
    - 将 Multi-Output Device 设置为系统默认输出设备。
 
 3. **运行音频测试**：
@@ -169,5 +276,10 @@ python interview/main.py
 通过这些步骤，无论在 macOS 还是 Windows 上，你都可以轻松实现音频捕获并应用于项目中。
 
 ---
+
+## changelog
+
+- 2024.8.20. web 前端, 外接知识库
+- 2024.8.16. 完成 ASR 语音识别, GPT 询问
 
 感谢您的使用！如有任何问题或建议，请随时联系。
