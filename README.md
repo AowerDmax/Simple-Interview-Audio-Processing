@@ -17,6 +17,8 @@
 支持 `本地部署` 和 `服务器部署`. `flex` 布局,在 `手机` `平板` `电脑` 下的具有良好的显示效果
 ![Web](img/web.gif)
 
+[web部分的仓库](https://github.com/AowerDmax/websocket-redis)
+
 ---
 
 ### RAG 展示
@@ -26,6 +28,8 @@
 ![Rag_1](img/RAG_1.png)
 
 ![Rag_2](img/RAG_2.png)
+
+[RAG部分的仓库](https://github.com/AowerDmax/websocket-redis)
 
 #### 如何使用 RAG 知识库
 
@@ -37,6 +41,7 @@
 ![Excel](img/excel.png)
 
 **Q:** 能否将我的项目进行存放在 `RAG` 知识库中呢?
+
 **A:** 目前需要自己处理, 自己询问 GPT 或者自己编写对应的问题, 或者你可以修改网络上 `AI审查代码的项目` 修改里面的`prompt`, 让其生成你自己项目的 `RAG` 知识库.
 
 ---
