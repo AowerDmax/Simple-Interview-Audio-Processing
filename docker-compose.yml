@@ -17,7 +17,7 @@ services:
       MEILISEARCH_HOST: "meilisearch"
       MEILISEARCH_PORT: 7700
       REDIS_HOST: "redis"
-      REDIS_HOST: 6379
+      REDIS_PORT: 6379
 
   meilisearch:
     image: getmeili/meilisearch:latest

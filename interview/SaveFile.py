@@ -29,9 +29,9 @@ class SaveFile:
             return "🤖"
 
     def export_dialogs_to_file(self, filename):
-        interviewer_list = self._get_valid_entries(self.interviewer_key, Config.INTERVIEWER_DIALOG_LEN)
-        rookie_list = self._get_valid_entries(self.rookie_key, Config.ROOKIE_DIALOG_LEN)
-        chatgpt_list = self._get_valid_entries(self.chatgpt_key, Config.CHATGPT_DIALOG_LEN)
+        interviewer_list = self._get_valid_entries(self.interviewer_key, 3000)
+        rookie_list = self._get_valid_entries(self.rookie_key, 3000)
+        chatgpt_list = self._get_valid_entries(self.chatgpt_key, 3000)
 
         combined_list = interviewer_list + rookie_list + chatgpt_list
 
