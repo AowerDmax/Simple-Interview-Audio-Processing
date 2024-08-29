@@ -6,7 +6,7 @@
 
 ---
 
-## Remote Feature
+## Future features
 
 1. 通过 `多模态` + `数据库` 构建人格, 使用 `Tampermonkey` 实现 `性格测试` 的 `全自动化`
 2. 如果你喜欢这个项目,可以给一个 star 吗? 如果有你想要的 `Feature` 可以在 `Issues` 或者其他地方告诉我.
