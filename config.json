@@ -1,0 +1,14 @@
+{
+  "shortcuts": {
+    "algorithm": ["<ctrl>", "<alt>", "a"],
+    "personality": ["<ctrl>", "<alt>", "p"],
+    "general": ["<ctrl>", "<alt>", "g"],
+    "long_screenshot": ["<ctrl>", "<alt>", "l"],
+    "help": ["<ctrl>", "<alt>", "h"],
+    "fix": ["<ctrl>", "<alt>", "f"]
+  },
+  "save_dir": "./screenshots",
+  "scroll_delay": 1.5,
+  "scroll_amount": 17,
+  "max_screenshots": 3
+}

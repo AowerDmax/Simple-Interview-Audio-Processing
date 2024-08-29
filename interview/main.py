@@ -6,7 +6,7 @@ from multiprocessing import Process
 from Rookie import Rookie
 from Interviewer import Interview
 from DialogManager import DialogManager
-from ChatgptManager import chatgpt_process
+from ScreenShot import listen_key_process
 from SaveFile import SaveFile
 from datetime import datetime
 
@@ -58,15 +58,15 @@ if __name__ == '__main__':
 
     interview_process = Process(target=interview_thread, args=("interviewer", 0, 1))
     rookie_process = Process(target=rookie_thread, args=("rookie", 0, 1))
-    question_process = Process(target=chatgpt_process)
+    listen_key_process = Process(target=listen_key_process)
 
     interview_process.start()
     rookie_process.start()
-    question_process.start()
+    listen_key_process.start()
 
     try:
         interview_process.join()
         rookie_process.join()
-        question_process.join()
+        listen_key_process.join()
     except KeyboardInterrupt:
         handle_exit(None, None)

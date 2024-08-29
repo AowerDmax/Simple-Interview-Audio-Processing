@@ -6,6 +6,48 @@
 
 ---
 
+## Remote Feature
+
+1. 通过 `多模态` + `数据库` 构建人格, 使用 `Tampermonkey` 实现 `性格测试` 的 `全自动化`
+2. 如果你喜欢这个项目,可以给一个 star 吗? 如果有你想要的 `Feature` 可以在 `Issues` 或者其他地方告诉我.
+
+## New Feature
+
+新增多模态和 GPT 快捷键调用
+
+```json
+{
+  "shortcuts": {
+    //mac control + optional + a .
+    "algorithm": ["<ctrl>", "<alt>", "a"], //按下快捷键,截屏调用算法题回答的 prompt
+    "personality": ["<ctrl>", "<alt>", "p"], //按下快捷键,截屏调用性格测评 的 prompt
+    "general": ["<ctrl>", "<alt>", "g"], //通用问答
+    "long_screenshot": ["<ctrl>", "<alt>", "l"], //长算法题
+    "help": ["<ctrl>", "<alt>", "h"], //GPT快捷键调用,读取对话记录,之前的间隔调用删掉.
+    "fix": ["<ctrl>", "<alt>", "f"] //代码修复
+  },
+  "save_dir": "./screenshots",
+  "scroll_delay": 1.5,
+  "scroll_amount": 17,
+  "max_screenshots": 3
+}
+```
+
+### 通用问答展示
+
+![general_screenShot](img/general_screenShot.png)
+![general_response](img/general_response.png)
+
+### 长算法题展示
+
+![algo_long_screenShot](img/algo_long_screenShot.png)
+![algo_long_response](img/algo_long_response.png)
+
+### 代码修复
+
+![fix_screenShot](img/fix_screenShot.png)
+![fix_response](img/fix_response.png)
+
 ### web 展示
 
 下图讲解, 通过播放本地音频,模仿系统内声音输出 `你为什么要使用消息队列呢?`
@@ -17,7 +59,7 @@
 支持 `本地部署` 和 `服务器部署`. `flex` 布局,在 `手机` `平板` `电脑` 下的具有良好的显示效果
 ![Web](img/web.gif)
 
-[web部分的仓库](https://github.com/AowerDmax/websocket-redis)
+[web 部分的仓库](https://github.com/AowerDmax/websocket-redis)
 
 ---
 
@@ -29,7 +71,7 @@
 
 ![Rag_2](img/RAG_2.png)
 
-[RAG部分的仓库](https://github.com/AowerDmax/websocket-redis)
+[RAG 部分的仓库](https://github.com/AowerDmax/websocket-redis)
 
 #### 如何使用 RAG 知识库
 
@@ -284,6 +326,7 @@ python interview/main.py
 
 ## changelog
 
+- 2024.8.29. 增加多模态,修改 GPT 为快捷键调用
 - 2024.8.20. web 前端, 外接知识库
 - 2024.8.16. 完成 ASR 语音识别, GPT 询问
 

@@ -31,6 +31,7 @@ class RequestSender:
             receiveData = ""
             buffer = ""
             buffer_time = 0.5
+            self.dialog.add_to_chatgpt("")
             try:
                 async with session.post(self.url, headers=self.headers, data=json.dumps(payload)) as response:
                     if response.status == 200:

@@ -106,6 +106,12 @@ class DialogManager:
         interviewer_list = self._get_valid_entries(self.interviewer_key, 1)
         return interviewer_list[-1]
     
+    def get_last_rookie(self):
+        rookie_list = self._get_valid_entries(self.rookie_key, 1)
+        if rookie_list:
+            return rookie_list[-1]
+        return None
+    
     def get_dialog(self):
         interviewer_list = self._get_valid_entries(self.interviewer_key, Config.INTERVIEWER_DIALOG_LEN)
         rookie_list = self._get_valid_entries(self.rookie_key, Config.ROOKIE_DIALOG_LEN)
