@@ -3,11 +3,11 @@ version: "3.8"
 services:
   app:
     image: ghcr.io/aowerdmax/websocket-redis/websocket_redis:latest
-    container_name: websocket_redis
     ports:
-      - "${GO_APP_PORT}:8080"
+      - "${GO_APP_PORT}:${GO_APP_PORT}"
     volumes:
       - ./data:/app/data
+      - ./.env:/app/.env
     depends_on:
       - meilisearch
       - redis
@@ -18,16 +18,18 @@ services:
       MEILISEARCH_PORT: 7700
       REDIS_HOST: "redis"
       REDIS_PORT: 6379
+    restart: on-failure
+    networks:
+      - app_network
 
   meilisearch:
     image: getmeili/meilisearch:latest
-    container_name: meilisearch
     ports:
       - "${MEILISEARCH_PORT}:7700"
     environment:
       MEILI_ENV: "development"
-    volumes:
-      - meili_data:/meili_data
+    networks:
+      - app_network
 
   funasr_interview:
     image: registry.cn-hangzhou.aliyuncs.com/funasr_repo/funasr:funasr-runtime-sdk-online-cpu-0.1.10
@@ -39,6 +41,8 @@ services:
     privileged: true
     stdin_open: true
     tty: true
+    networks:
+      - app_network
 
   funasr_rookie:
     image: registry.cn-hangzhou.aliyuncs.com/funasr_repo/funasr:funasr-runtime-sdk-online-cpu-0.1.10
@@ -50,24 +54,16 @@ services:
     privileged: true
     stdin_open: true
     tty: true
+    networks:
+      - app_network
 
   redis:
     image: redis:latest
-    container_name: redis_server
     ports:
       - "${REDIS_PORT}:6379"
-    volumes:
-      - redis_data:/data
     networks:
-      - redis_network
+      - app_network
     command: ["redis-server", "--appendonly", "yes"]
 
-volumes:
-  redis_data:
-    driver: local
-  meili_data:
-    driver: local
-
 networks:
-  redis_network:
-    driver: bridge
+  app_network:

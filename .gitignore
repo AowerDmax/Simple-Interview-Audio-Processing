@@ -10,6 +10,15 @@ interview/__pycache__/
 # C extensions
 *.so
 
+screenshots/*
+!screenshots/long_screenshot_20240829_212734.png
+!screenshots/screenshot_20240829_160848.png
+!screenshots/screenshot_20240829_213839.png
+!screenshots/screenshot_20240829_225747.png
+
+dialogs_output*
+!dialogs_output_202408201256.md
+
 # Distribution / packaging
 .Python
 env/

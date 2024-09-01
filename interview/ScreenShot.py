@@ -21,7 +21,8 @@ class ScreenshotManager:
             "general": ["<ctrl>", "<alt>", "g"],
             "long_screenshot": ["<ctrl>", "<alt>", "l"],
             "help": ["<ctrl>", "<alt>", "h"],
-            "fix": ["<ctrl>", "<alt>", "f"]
+            "fix": ["<ctrl>", "<alt>", "f"],
+            "ocr": ["<ctrl>", "<alt>", "o"]
         },
         "save_dir": "./screenshots",
         "scroll_delay": 1.5,
