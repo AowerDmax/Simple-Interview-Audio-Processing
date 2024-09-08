@@ -23,23 +23,35 @@
 
 新增多模态和 GPT 快捷键调用
 
-```json
-{
-  "shortcuts": {
-    //mac control + optional + a .
-    "algorithm": ["<ctrl>", "<alt>", "a"], //按下快捷键,截屏调用算法题回答的 prompt
-    "personality": ["<ctrl>", "<alt>", "p"], //按下快捷键,截屏调用性格测评 的 prompt
-    "general": ["<ctrl>", "<alt>", "g"], //通用问答
-    "long_screenshot": ["<ctrl>", "<alt>", "l"], //长算法题
-    "help": ["<ctrl>", "<alt>", "h"], //GPT快捷键调用,读取对话记录,之前的间隔调用删掉.
-    "fix": ["<ctrl>", "<alt>", "f"] //代码修复
-  },
-  "save_dir": "./screenshots",
-  "scroll_delay": 1.5,
-  "scroll_amount": 17,
-  "max_screenshots": 3
-}
-```
+#### MacOS
+
+##### 对话询问
+
+使用`Command (⌘) + Option/Alt (⌥) + h` 调用`GPT` 进行对话询问.
+
+##### 截图询问
+
+使用`Command (⌘) + Option/Alt (⌥) + a` 调用`algorithm Prompt` 询问.
+使用`Command (⌘) + Option/Alt (⌥) + p` 调用`personality Prompt` 询问.
+使用`Command (⌘) + Option/Alt (⌥) + g` 调用`general Prompt` 询问.
+使用`Command (⌘) + Option/Alt (⌥) + l` 调用`long_screenshot Prompt` 询问. (截屏拼接)
+使用`Command (⌘) + Option/Alt (⌥) + f` 调用`fix Prompt` 询问.
+使用`Command (⌘) + Option/Alt (⌥) + o` 调用`ocr Prompt` 询问.
+
+#### Windows
+
+##### 对话询问
+
+使用`<ctrl> + <alt> + h` 调用`GPT` 进行对话询问.
+
+##### 截图询问
+
+使用`<ctrl> + <alt> + a` 调用`algorithm Prompt` 询问.
+使用`<ctrl> + <alt> + p` 调用`personality Prompt` 询问.
+使用`<ctrl> + <alt> + g` 调用`general Prompt` 询问.
+使用`<ctrl> + <alt> + l` 调用`long_screenshot Prompt` 询问. (截屏拼接)
+使用`<ctrl> + <alt> + f` 调用`fix Prompt` 询问.
+使用`<ctrl> + <alt> + o` 调用`ocr Prompt` 询问.
 
 ### 通用问答展示
 
