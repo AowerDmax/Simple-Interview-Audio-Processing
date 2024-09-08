@@ -89,7 +89,27 @@ class ScreenshotManager:
         return key_mapping.get(str(key), None)
 
     def map_key_for_macos(self, key):
-        return str(key)
+        key_mapping = {
+            'Key.cmd': '<cmd>',
+            'Key.ctrl': '<ctrl>',
+            'Key.alt': '<alt>',
+            'Key.shift': '<shift>',
+            'Key.enter': '<enter>',
+            'Key.space': '<space>',
+            'Key.tab': '<tab>',
+            'Key.esc': '<esc>',
+            'Key.backspace': '<backspace>',
+            'Key.caps_lock': '<caps_lock>',
+            'Key.right': '<right>',
+            'Key.left': '<left>',
+            'Key.up': '<up>',
+            'Key.down': '<down>'
+        }
+        if isinstance(key, keyboard.KeyCode):
+            return key.char.lower() if key.char else None
+        else:
+            return key_mapping.get(str(key), None)
+
 
     def map_key_for_linux(self, key):
         if hasattr(key, 'vk'):
