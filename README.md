@@ -6,10 +6,18 @@
 
 ---
 
+[Windows 用户部署教程](Windows_user_tutorial.md)
+
+[MacOS 用户部署教程](macOS_user_tutorial.md)
+
 ## Future features
 
 1. 通过 `多模态` + `数据库` 构建人格, 使用 `Tampermonkey` 实现 `性格测试` 的 `全自动化`
-2. 如果你喜欢这个项目,可以给一个 star 吗? 如果有你想要的 `Feature` 可以在 `Issues` 或者其他地方告诉我.
+2. ocr 识别数学公式准确率不高,导致 GPT 有时候会读不懂题进而乱回答
+3. 目前回答的 GPT 味太过严重, 这边我会爬取一些题解面经作为 RAG 外接,同时优化 prompt
+4. GPT 的正确率还是太低,做一个 claude 和 GPT,甚至其他模型相互验证
+5. 最重要: 优化部署流程部署难度,致力于让每个人都能简简单单的用上(考虑做一个用户端的界面并打包)
+6. 如果你喜欢这个项目,可以给一个 star 吗? 如果有你想要的 `Feature` 可以在 `Issues` 或者其他地方告诉我.
 
 ## New Feature
 
