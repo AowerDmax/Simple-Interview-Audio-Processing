@@ -10,14 +10,30 @@ for i in range(audio.get_device_count()):
     device_info = audio.get_device_info_by_index(i)
     print(f"Device {i}: {device_info['name']}")
 
+def print_device_info(audio, index):
+    try:
+        info = audio.get_device_info_by_index(index)
+        print(f"Device {index}:")
+        print(f"  Name: {info['name']}")
+        print(f"  Max Input Channels: {info['maxInputChannels']}")
+        print(f"  Max Output Channels: {info['maxOutputChannels']}")
+        print(f"  Default Sample Rate: {info['defaultSampleRate']}")
+    except Exception as e:
+        print(f"Error getting info for device {index}: {e}")
+
 # 选择 Aggregate Device 和麦克风的设备索引
-aggregate_device_index = 13  # 根据上面的列表选择适合的设备索引
-mic_device_index = 2  # 替换为你的麦克风设备索引
+aggregate_device_index = 1  # 根据上面的列表选择适合的设备索引
+mic_device_index = 3  # 替换为你的麦克风设备索引
+
+print_device_info(audio, aggregate_device_index)
+print_device_info(audio, mic_device_index)
+
+
 
 # 配置参数
 FORMAT = pyaudio.paInt16
-RATE = Config.AUDIO_FS
-CHANNELS = 1  # 单声道可能会兼容不同的设备
+RATE = 48000
+CHANNELS = 2  # 单声道可能会兼容不同的设备
 chunk_size = 60 * Config.CHUNK_SIZE[1] / Config.CHUNK_INTERVAL
 CHUNK = int(RATE / 1000 * chunk_size)
 
@@ -43,7 +59,7 @@ print("Recording...")
 system_frames = []
 mic_frames = []
 
-for _ in range(500):
+for _ in range(50):
     system_data = system_stream.read(CHUNK)
     mic_data = mic_stream.read(CHUNK)
     system_frames.append(system_data)

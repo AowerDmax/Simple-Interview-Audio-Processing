@@ -6,6 +6,8 @@ import json
 from multiprocessing import Process
 from Config import Config
 from redis.exceptions import LockNotOwnedError
+import platform
+
 
 class DialogManager:
     _instance = None
@@ -23,6 +25,7 @@ class DialogManager:
         self.rookie_key = "dialog_manager:rookie"
         self.chatgpt_key = "dialog_manager:chatgpt"
         self.next_id = "dialog_manager:next_id"
+        self.system = platform.system()
 
         self.interviewer_icons = ["🎤"]
         self.rookie_icons = ["😅"]
@@ -64,7 +67,10 @@ class DialogManager:
 
         result = "\n".join(output)
         if out:
-            os.system('clear')
+            if self.system == "Windows":
+                os.system('cls')
+            elif self.system == "Darwin" or self.system == "Linux":
+                os.system('clear')
             print(result)
         return result
 

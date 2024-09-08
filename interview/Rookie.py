@@ -1,4 +1,5 @@
 import pyaudio
+import numpy as np
 import json
 import asyncio
 import websockets
@@ -38,15 +39,20 @@ class Rookie:
                     await asyncio.sleep(3)
                 except Exception as e:
                     print(f"Rookie error occurred: {e}")
+                    import traceback
+                    traceback.print_exc()
                     await asyncio.sleep(3)
 
     async def record_microphone(self):
         FORMAT = pyaudio.paInt16
-        CHANNELS = 1
+        CHANNELS = Config.AUDIO_CHANNEL
         RATE = Config.AUDIO_FS
         chunk_size = 60 * Config.CHUNK_SIZE[1] / Config.CHUNK_INTERVAL
         CHUNK = int(RATE / 1000 * chunk_size)
         audio = pyaudio.PyAudio()
+
+        TARGET_RATE = 16000
+        TARGET_CHANNELS = 1
 
         while True:
             try:
@@ -76,17 +82,35 @@ class Rookie:
         })
 
         await self.websocket.send(message)
+        def convert_to_mono(data, channels):
+            audio_data = np.frombuffer(data, dtype=np.int16)
+            mono_data = audio_data.reshape((-1, channels)).mean(axis=1)
+            return mono_data.astype(np.int16)
+
+        def resample_audio(data, original_rate, target_rate):
+            audio_data = np.frombuffer(data, dtype=np.int16)
+            resampled_data = np.interp(np.linspace(0, len(audio_data), int(len(audio_data) * target_rate / original_rate)),
+                                    np.arange(len(audio_data)), audio_data)
+            return resampled_data.astype(np.int16)
+
+
         while True:
+            data = mic_stream.read(CHUNK)
             try:
-                data = mic_stream.read(CHUNK, exception_on_overflow=False)
-                await self.websocket.send(data)
+                if CHANNELS == TARGET_CHANNELS and RATE == TARGET_RATE:
+                    await self.websocket.send(data)
+                else:
+                    mono_data = convert_to_mono(data, CHANNELS)
+
+                    resampled_data = resample_audio(mono_data, RATE, TARGET_RATE)
+
+                    output_data = resampled_data.tobytes()
+
+                    await self.websocket.send(output_data)
                 await asyncio.sleep(0.01)
             except websockets.exceptions.ConnectionClosedError as e:
                 print(f"Connection closed with error: {e}")
                 break
-            except OSError as e:
-                print(f"Error reading from microphone: {e}")
-                await asyncio.sleep(1)
 
     async def message(self, id):
         if Config.OUTPUT_DIR is not None:

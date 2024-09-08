@@ -17,6 +17,8 @@ botocore = "^1.35.8"
 pynput = "^1.7.7"
 pyautogui = "^0.9.54"
 pillow = "^10.4.0"
+redis = "^5.0.8"
+numpy = "^2.1.1"
 
 
 [build-system]

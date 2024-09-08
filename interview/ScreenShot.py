@@ -10,6 +10,7 @@ from R2Uploader import R2Uploader
 from MultimodeManager import MultimodeManager
 from DialogManager import DialogManager
 from ChatgptManager import ChatgptManager
+import platform
 
 
 class ScreenshotManager:
@@ -22,7 +23,8 @@ class ScreenshotManager:
             "long_screenshot": ["<ctrl>", "<alt>", "l"],
             "help": ["<ctrl>", "<alt>", "h"],
             "fix": ["<ctrl>", "<alt>", "f"],
-            "ocr": ["<ctrl>", "<alt>", "o"]
+            "ocr": ["<ctrl>", "<alt>", "o"],
+            "exit": ["<ctrl>", "c"]
         },
         "save_dir": "./screenshots",
         "scroll_delay": 1.5,
@@ -40,6 +42,7 @@ class ScreenshotManager:
         self.multimodeManager = MultimodeManager()
         self.loop = None
         self.chatgpt_manager = ChatgptManager()
+        self.system = platform.system()
         os.makedirs(self.config['save_dir'], exist_ok=True)
 
     def load_config(self):
@@ -52,6 +55,65 @@ class ScreenshotManager:
         with open(self.CONFIG_FILE, 'w') as f:
             json.dump(self.config, f, indent=4)
 
+    def map_key_for_platform(self, key):
+        if self.system == 'Windows':
+            return self.map_key_for_windows(key)
+        elif self.system == 'Darwin':
+            return self.map_key_for_macos(key)
+        elif self.system == 'Linux':
+            return self.map_key_for_linux(key)
+        return key
+
+    def map_key_for_windows(self, key):
+        if hasattr(key, 'vk'):
+            vk = key.vk
+            if 65 <= vk <= 90:
+                return chr(vk).lower()
+            if 48 <= vk <= 57:
+                return chr(vk)
+
+        key_mapping = {
+            'Key.ctrl_l': '<ctrl>',
+            'Key.ctrl_r': '<ctrl>',
+            'Key.alt_l': '<alt>',
+            'Key.alt_r': '<alt>',
+            'Key.shift_l': '<shift>',
+            'Key.shift_r': '<shift>',
+            'Key.cmd': '<cmd>',
+            'Key.enter': '<enter>',
+            'Key.space': '<space>',
+            'Key.tab': '<tab>',
+            'Key.esc': '<esc>',
+            'Key.backspace': '<backspace>',
+        }
+        return key_mapping.get(str(key), None)
+
+    def map_key_for_macos(self, key):
+        return str(key)
+
+    def map_key_for_linux(self, key):
+        if hasattr(key, 'vk'):
+            vk = key.vk
+            if 65 <= vk <= 90:
+                return chr(vk).lower()
+            if 48 <= vk <= 57:
+                return chr(vk)
+
+        key_mapping = {
+            'Key.ctrl_l': '<ctrl>',
+            'Key.ctrl_r': '<ctrl>',
+            'Key.alt_l': '<alt>',
+            'Key.alt_r': '<alt>',
+            'Key.shift_l': '<shift>',
+            'Key.shift_r': '<shift>',
+            'Key.enter': '<enter>',
+            'Key.space': '<space>',
+            'Key.tab': '<tab>',
+            'Key.esc': '<esc>',
+            'Key.backspace': '<backspace>',
+        }
+        return key_mapping.get(str(key), None)
+    
     def take_screenshot(self):
         screenshot = pyautogui.screenshot()
         filename = datetime.now().strftime("screenshot_%Y%m%d_%H%M%S.png")
@@ -124,11 +186,12 @@ class ScreenshotManager:
         asyncio.run_coroutine_threadsafe(self._async_on_press(key), self.loop)
 
     async def _async_on_press(self, key):
-        try:
-            key_char = key.char
-        except AttributeError:
-            key_char = f'<{key._name_}>'
-        
+
+        key_char = self.map_key_for_platform(key)
+
+        if key_char is None:
+            return
+
         self.current_keys.add(key_char)
         
         for category, shortcut in self.config['shortcuts'].items():
@@ -137,20 +200,23 @@ class ScreenshotManager:
                     filepath = await self.take_long_screenshot()
                 elif category == "help":
                     await self.run_chatgpt_workflow()
+                elif category == "exit":
+                    raise KeyboardInterrupt("Exit shortcut triggered")
                 else:
                     filepath = self.take_screenshot()
-                
+
                 if filepath:
                     link = self.uploader.upload_and_get_link(filepath, self.link_type)
                     print(f"Generated link: {link}")
                     await self.generate_question(category, link)
 
+
     def on_release(self, key):
-        try:
-            key_char = key.char
-        except AttributeError:
-            key_char = f'<{key._name_}>'
-        
+        key_char = self.map_key_for_platform(key)
+
+        if key_char is None:
+            return 
+    
         if key_char in self.current_keys:
             self.current_keys.remove(key_char)
 

@@ -10,7 +10,7 @@ class ChatgptManager:
     def __init__(self):
         self.dialog = DialogManager()
         self.request_sender = RequestSender()
-        self.prompt_directory = "./workflows/prompt_1"
+        self.prompt_directory = "./workflows/prompt_2"
         self.last_processed_id = 3
         self.rag = RagManager()
 

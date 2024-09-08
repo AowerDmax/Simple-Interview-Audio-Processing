@@ -33,11 +33,11 @@ def handle_exit(signum, frame):
 
     interview_process.terminate()
     rookie_process.terminate()
-    question_process.terminate()
+    listen_key_process.terminate()
 
     interview_process.join()
     rookie_process.join()
-    question_process.join()
+    listen_key_process.join()
 
     saveFile = SaveFile()
     current_time = datetime.now().strftime("%Y%m%d%H%M")
