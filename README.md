@@ -32,10 +32,15 @@
 ##### 截图询问
 
 使用`Command (⌘) + Option/Alt (⌥) + a` 调用`algorithm Prompt` 询问.
+
 使用`Command (⌘) + Option/Alt (⌥) + p` 调用`personality Prompt` 询问.
+
 使用`Command (⌘) + Option/Alt (⌥) + g` 调用`general Prompt` 询问.
+
 使用`Command (⌘) + Option/Alt (⌥) + l` 调用`long_screenshot Prompt` 询问. (截屏拼接)
+
 使用`Command (⌘) + Option/Alt (⌥) + f` 调用`fix Prompt` 询问.
+
 使用`Command (⌘) + Option/Alt (⌥) + o` 调用`ocr Prompt` 询问.
 
 #### Windows
@@ -47,10 +52,15 @@
 ##### 截图询问
 
 使用`<ctrl> + <alt> + a` 调用`algorithm Prompt` 询问.
+
 使用`<ctrl> + <alt> + p` 调用`personality Prompt` 询问.
+
 使用`<ctrl> + <alt> + g` 调用`general Prompt` 询问.
+
 使用`<ctrl> + <alt> + l` 调用`long_screenshot Prompt` 询问. (截屏拼接)
+
 使用`<ctrl> + <alt> + f` 调用`fix Prompt` 询问.
+
 使用`<ctrl> + <alt> + o` 调用`ocr Prompt` 询问.
 
 ### 通用问答展示

@@ -82,7 +82,9 @@ docker-compose restart <服务名>
 ![2024-09-08-16-43-48](asserts/2024-09-08-16-43-48.png)
 ![2024-09-08-16-43-56](asserts/2024-09-08-16-43-56.png)
 ![2024-09-08-16-44-01](asserts/2024-09-08-16-44-01.png)
+
 从`程序(win)` 里面找 `Audio Repeater`
+
 ![2024-09-08-16-44-07](asserts/2024-09-08-16-44-07.png)
 
 此时,你需要测试一下,你的音响是否能播放声音, 你的麦克风能否正常输入声音.
@@ -252,10 +254,15 @@ python interview/main.py
 ```
 
 使用`<ctrl> + <alt> + a` 调用`algorithm Prompt` 询问.
+
 使用`<ctrl> + <alt> + p` 调用`personality Prompt` 询问.
+
 使用`<ctrl> + <alt> + g` 调用`general Prompt` 询问.
+
 使用`<ctrl> + <alt> + l` 调用`long_screenshot Prompt` 询问. (截屏拼接)
+
 使用`<ctrl> + <alt> + f` 调用`fix Prompt` 询问.
+
 使用`<ctrl> + <alt> + o` 调用`ocr Prompt` 询问.
 
 ## QA
